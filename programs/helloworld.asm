@@ -5,7 +5,7 @@ CLR A		; Loading Address
 ADD A, msg
 
 print:
-	CLR T
+	CLR T			; loading the value at [msg + n]
 	ADD T, [A]
 	ADD A, 1
 	MOV [0xffff], T
