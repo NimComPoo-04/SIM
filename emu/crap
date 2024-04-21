@@ -1,0 +1,57 @@
+/*
+
+// Binary Code for helloworld, use this for testing perposes if needed
+
+// CLR A
+mem.data[0] = CLR | (2 << 3);
+
+// ADD A, msg
+mem.data[1] = ADD | (IMM16 << 3) | (REG_A << 5);
+mem.data[2] = 20;
+mem.data[3] = 0;
+
+// CLR T
+mem.data[4] = CLR | (3 << 3);;
+
+// ADD T, [A]
+mem.data[5] = ADD | (MEM_REG << 3) | (REG_T << 5) | (REG_A << 6);
+
+// MOV [0xFFFF], T
+mem.data[6] = MOV | (2 << 3) | (REG_T << 5);
+mem.data[7] = 0xff;
+mem.data[8] = 0xff;
+
+// ADD A, imm8
+mem.data[9] = ADD | (IMM8 << 3) | (REG_A << 5) | (REG_A << 6);
+mem.data[10] = 1;
+
+// ADD T, imm8
+mem.data[11] = ADD | (IMM8 << 3) | (REG_T << 5);
+mem.data[12] = 0;
+
+// JMP COND 4
+mem.data[13] = JMP | (IMM16 << 3) | (1 << 7);
+mem.data[14] = 4;
+mem.data[15] = 0;
+
+// JMP $
+mem.data[16] = JMP | (IMM16 << 3);
+mem.data[17] = 16;
+mem.data[18] = 0;
+
+// msg
+mem.data[20] = 'H';
+mem.data[21] = 'e';
+mem.data[22] = 'l';
+mem.data[23] = 'l';
+mem.data[24] = 'o';
+mem.data[25] = ',';
+mem.data[26] = ' ';
+mem.data[27] = 'W';
+mem.data[28] = 'o';
+mem.data[29] = 'r';
+mem.data[30] = 'l';
+mem.data[31] = 'd';
+mem.data[32] = '!';
+mem.data[33] = '\n';
+ */

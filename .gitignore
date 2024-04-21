@@ -1,0 +1,6 @@
+*.o
+*.bin
+asm_exe
+emu_exe
+asm/asm
+emu/emu
