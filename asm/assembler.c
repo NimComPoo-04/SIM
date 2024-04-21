@@ -166,7 +166,7 @@ int check_if_register(token_t tok)
 	// XXX: DO NOT CHANGE THE ORDER OF THIS ARRAY BOIS
 	static const char *regs[] = {
 		"ZR", "CR", "A", "T",
-		"AH", "AL", "TH", "TL",
+		"AL", "AH", "TL", "TH",
 		"ARG", "PC", "IR", "MAR",
 		"MBR" };
 
