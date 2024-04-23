@@ -47,8 +47,6 @@ int main(int argc, char **argv)
 
 	mem_load_img(&mem, data, size);
 
-//	mem_dump(&mem);
-
 	cpu_t cpu;
 
 	cpu_reset(&cpu);
@@ -58,6 +56,8 @@ int main(int argc, char **argv)
 	{
 		cpu_step(&cpu, &mem);
 	}
+
+	mem_dump(&mem);
 
 	mem_destroy(&mem);
 

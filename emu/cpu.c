@@ -193,17 +193,17 @@ void cpu_SUB(cpu_t *cpu, mem_t *mem)
 	{
 		case IMM8:
 		case IMM16:
-			k -= cpu->ARG + cpu->F.CARRY;
+			k = k - cpu->ARG - cpu->F.CARRY;
 			break;
 
 		case REG:
-			k -= *src + cpu->F.CARRY;
+			k = k - *src - cpu->F.CARRY;
 			break;
 
 		case MEM_REG:
 			cpu->MAR = *src;
 			cpu->MBR = mem_get(mem, cpu->MAR);
-			k -= cpu->MBR + cpu->F.CARRY;
+			k = k - cpu->MBR - cpu->F.CARRY;
 			break;
 	}
 

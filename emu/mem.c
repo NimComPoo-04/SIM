@@ -23,7 +23,15 @@ char mem_get(mem_t *m, uint16_t index)
 	if(index == 0xFFFF)
 		return 0x69;
 	else
-		return m->data[index];
+	{
+		if(index >= m->size)
+		{
+			printf("Out of memory write\n");
+			return 0xaa;				// represents random noise
+		}
+		else
+			return m->data[index];
+	}
 }
 
 void mem_set(mem_t *m, uint16_t index, char data)
@@ -32,7 +40,14 @@ void mem_set(mem_t *m, uint16_t index, char data)
 	if(index == 0xFFFF)
 		putc(data, stderr);
 	else
-		m->data[index] = data;
+	{
+		if(index >= m->size)
+			printf("Out of memory write\n");
+		else if(index >= m->size / 2)
+			m->data[index] = data;
+		else
+			printf("ROM memory write\n");
+	}
 }
 
 void mem_destroy(mem_t *m)

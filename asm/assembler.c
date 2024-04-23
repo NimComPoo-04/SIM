@@ -816,19 +816,19 @@ uint8_t *assembler_to_bin(assembler_t *a)
 			break;
 		}
 
-		if(a->cursor + a->blocks[i].size >= a->size)
-		{
-			printf("Binary OutOfMemory Error : check SIZE directive!!\n");
-			AssemblerError = 1;
-			break;
-		}
-
 		if(a->blocks[i].type == ORIGIN)
 		{
 			a->cursor = a->blocks[i].size;
 		}
 		else
 		{
+			if(a->cursor + a->blocks[i].size >= a->size)
+			{
+				printf("Binary OutOfMemory Error : check SIZE directive!!\n");
+				AssemblerError = 1;
+				break;
+			}
+
 			memcpy(data + a->cursor, a->blocks[i].data, a->blocks[i].size);
 			memset(checker + a->cursor, 1, a->blocks[i].size);
 

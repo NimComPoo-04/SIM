@@ -1,6 +1,23 @@
 .size 256
 .org 0
 
+init:
+
+CLR A
+ADD A, 0
+MOV [Ac], A
+
+CLR A
+ADD A, 1
+MOV [Bc], A
+
+CLR A
+ADD A, 0
+MOV [Cc], A
+
+CLR A
+ADD A, 7
+MOV [count], A
 
 fibo:
 ;; Loading A and T
@@ -64,8 +81,8 @@ JMP COND  fibo
 hlt:
 JMP hlt
 
-Ac: .word 0
-Bc: .word 1
-Cc: .word 1
-
-count: .word 7
+;; Locations in ram can not write it out right now
+.org 257 Ac:
+.org 258 Bc:
+.org 259 Cc:
+.org 260 count:
