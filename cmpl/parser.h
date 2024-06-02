@@ -84,6 +84,8 @@ typedef struct block_t
 {
 	BlockExpr type;
 
+	int pos;
+
 	union
 	{
 		struct

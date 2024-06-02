@@ -2,36 +2,66 @@
 
 #include "lexer.h"
 #include "parser.h"
+#include "executor.h"
 
-const char values[] = 
-"let a = 0;"
-"let b = 1;"
-"let c = 0;"
-"let n = 10;"
-"let buff = [100];"
-"while n do"
-"{"
-"	c = a + b;"
-"	a = b;"
-"	b = c;"
-"	n = n - 1;"
-"	print(tonumber(buff, a));"
-"}"
-;
+static char *source;
+static int size;
 
-int main(void)
+int read_file(const char *fname)
 {
-	lexer_t l = lex_tokenize(values, sizeof values - 1);
-	lex_print(&l);
+	FILE *f = fopen(fname, "rb+");
 
+	if(!f)
+		return 0;
+
+	size = ftell(f);
+	fseek(f, 0, SEEK_END);
+	size = ftell(f) - size;
+	fseek(f, 0, SEEK_SET);
+
+	source = calloc(sizeof(char), size + 1);
+	fread(source, 1, size, f);
+
+	fclose(f);
+
+	return 1;
+}
+
+int main(int argn, char **argv)
+{
+	if(argn != 2)
+	{
+		fprintf(stderr, "./cmpl filename\n");
+		return -1;
+	}
+
+	if(!read_file(argv[1]))
+	{
+		fprintf(stderr, "File does not exist!\n");
+		return -2;
+	}
+
+	lexer_t l = lex_tokenize(source, size);
+
+	puts("=== Tokens ===");
+	lex_print(&l);
 	puts("");
 
 	program_t prg = parse_program(&l);
+	puts("");
 
+	puts("=== Program ===");
 	program_print(&prg);
+	puts("");
 
-	//expr_destory(e);
-	lex_destroy(&l);
+	puts("=== Output ===");
+	executor_t e = {.program = &prg};
+	execute_program(&e);
+	puts("");
+
+	puts("=== Symbol Table ===");
+	table_print(&e.symbols);
+	puts("");
 
 	return 0;
 }

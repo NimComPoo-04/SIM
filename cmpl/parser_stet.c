@@ -13,6 +13,8 @@ block_t *parse_block(lexer_t *l)
 
 	token_t tok = lex_next(l);
 
+	int prevpos = l->pos;
+
 	switch(tok.type)
 	{
 		case LEX_LET:
@@ -174,6 +176,8 @@ block_t *parse_block(lexer_t *l)
 			}
 			break;
 	}
+
+	b->pos = prevpos;
 
 	return b;
 }
