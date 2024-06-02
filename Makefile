@@ -1,4 +1,4 @@
-all: asm emu
+all: asm emu cmpl
 
 asm:
 	make -C asm
@@ -8,5 +8,9 @@ emu:
 	make -C emu
 	cp emu/emu emu_exe
 
-.PHONY: asm emu
+cmpl:
+	make -C cmpl
+	cp cmpl/cmpl cmpl_exe
+
+.PHONY: asm emu cmpl
 
