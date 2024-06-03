@@ -1,0 +1,7 @@
+let buf = [30];
+let msg = "Enter a word: ";
+
+print(msg);
+gets(buf);
+
+print(buf);

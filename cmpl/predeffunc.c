@@ -7,14 +7,29 @@
 #include "executor.h"
 #include "predeffunc.h"
 
-
 void *FUNC_print(executor_t *exe, expr_list_t *v)
 {
 	if(!v || v->next != NULL)
 		ERROR("Print only accepts 1 value.");
 
 	expr_t *e = v->value;
-	printf("%d", execute_expr(exe, e));
+
+	// TODO: shift type checking to executor
+	if(e->type == EXPR_IDENT)
+	{
+		symbol_t *sym = table_get(&(exe->symbols), e->ident);
+
+		if(sym == NULL)
+			ERROR("Variable is Undefined. %d", e->pos);
+
+		if(sym->isarray)
+			printf("%.*s", sym->size, sym->data);
+		else
+			printf("%d", sym->data[0]);
+	}
+	else
+		printf("%d", execute_expr(exe, e));
+
 	return NULL;
 }
 
@@ -47,13 +62,17 @@ void *FUNC_gets(executor_t *exe, expr_list_t *v)
 		ERROR("Expression is not an identifier.");
 
 	symbol_t *sym = table_get(&(exe->symbols), e->ident);
+	if(sym == NULL)
+		ERROR("Variable is Undefined. %d", e->pos);
+
 	if(sym->isconst)
 		ERROR("Unable to edit constant symbol.");
 
 	if(!sym->isarray)
 		ERROR("Symbol is not of array type.");
 
-	fgets(sym->data, sym->size, stdin);
+	scanf("%s", sym->data);
+
 	return NULL;
 }
 

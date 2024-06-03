@@ -144,27 +144,71 @@ void execute_block(executor_t *e, block_t *blk)
 
 			if(sym.isarray)
 			{
-				if(blk->let.type != DECL_STRING)
+				switch(blk->let.type)
 				{
-					expr_list_t *t = blk->let.expr;
+					case DECL_ARRAY:
+						{
+							expr_list_t *t = blk->let.expr;
 
-					while(e)
-					{
-						if(sym.size % BLOCK_SIZE == 0)
-							sym.data = realloc(sym.data, sym.size);
-						sym.data[sym.size++] = execute_expr(e, t->value);
+							while(t)
+							{
+								if(sym.size % BLOCK_SIZE == 0)
+									sym.data = realloc(sym.data, sym.size);
+								sym.data[sym.size++] = execute_expr(e, t->value);
 
-						t = t->next;
-					}
+								t = t->next;
+							}
+						}
+						break;
+
+					case DECL_UINNIT:
+						{
+							expr_list_t *t = blk->let.expr;
+
+							sym.size = execute_expr(e, t->value);
+							sym.data = calloc(sizeof(char), sym.size);;
+						}
+						break;
+
+					case DECL_STRING:
+						{
+							token_t t = blk->let.str;
+							for(int i = 1; i < t.len - 1; i++)
+							{
+								char c = 0;
+								if(t.str[i] == '\\')
+								{
+									i++;
+									switch(t.str[i])
+									{
+										case 'n':
+											c = '\n';
+											break;
+										default:
+											c = t.str[i];
+									}
+								}
+								else
+									c = t.str[i];
+
+								if(sym.size % BLOCK_SIZE == 0)
+									sym.data = realloc(sym.data, sym.size);
+								sym.data[sym.size++] = c;
+							}
+						}
+						break;
+					default:
+						break;
 				}
-				else
-					ERROR("Strings not implemented Yet. %d\n", blk->pos);
 			}
 			else
 			{
 				sym.data = calloc(1, sizeof(char));
 				sym.size = 1;
-				sym.data[0] = execute_expr(e, blk->let.expr->value);
+				if(blk->let.expr)
+					sym.data[0] = execute_expr(e, blk->let.expr->value);
+				else
+					sym.data[0] = 0;
 			}
 
 			table_set(&(e->symbols), blk->let.ident, sym);
